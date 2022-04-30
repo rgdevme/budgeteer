@@ -1,0 +1,24 @@
+{
+  "name": "budgeteer",
+  "version": "1.0.0",
+  "repository": "git@github:rgdevme/budgeteer.git",
+  "author": "Rafael Gonzalez <reggon81@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-icons": "^4.3.1"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.4.1",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
+    "parcel": "^2.4.1",
+    "process": "^0.11.10"
+  }
+}
