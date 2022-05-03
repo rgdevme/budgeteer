@@ -1,0 +1,71 @@
+.modalcontainer {
+  visibility: hidden;
+  display: none;
+  opacity: 0;
+
+  &.active {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+  }
+
+  .modal,
+  .backlayer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .modal {
+    background: white;
+    z-index: 10000;
+    height: calc(100% - 4em);
+    width: calc(100% - 4em);
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 1rem;
+    padding: 1em;
+    max-width: 480px;
+    display: grid;
+    grid-template:
+      'op op op' 1fr
+      'ok .  xx' 3rem
+      / 1fr 1rem 6rem;
+  }
+
+  .backlayer {
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+
+  .options {
+    grid-area: op;
+    height: 100%;
+    overflow: auto;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    /* Firefox */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  .button {
+    width: 100%;
+  }
+  .done {
+    grid-area: ok;
+    margin-right: 1rem;
+  }
+
+  .close {
+    grid-area: xx;
+  }
+
+}
