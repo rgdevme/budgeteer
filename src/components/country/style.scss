@@ -1,0 +1,170 @@
+.country-data {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  transition: all 150ms;
+  max-width: 480px;
+
+  &[data-titles=true] {
+    width: 0;
+    background-color: transparent;
+    overflow: visible;
+    white-space: nowrap;
+    align-items: flex-end;
+  }
+
+  &[data-titles=false] {
+    background-color: white;
+    flex: 1 0 0;
+    overflow: hidden;
+    text-align: center;
+    font-size: 0.85rem;
+    vertical-align: middle;
+
+    * {
+      line-height: 2rem;
+    }
+  }
+
+  >* {
+    min-height: 3rem;
+    padding: .5rem 1em;
+
+    &:nth-child(odd) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  * {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .controls {
+    display: flex;
+    height: 4rem;
+    justify-content: center;
+    background-color: transparent;
+  }
+
+  .flag {
+    max-height: 3rem;
+
+    img {
+      object-position: center;
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .name {
+    font-weight: bold;
+  }
+
+  .codes {
+    *:not(:first-child) {
+      margin-left: 0.5em;
+    }
+  }
+
+  .exchangerates {
+    cursor: pointer;
+  }
+
+  .jobs {
+    &[data-button=true] {
+      padding: 0;
+      overflow: hidden;
+
+      >* {
+        border-radius: 0;
+      }
+    }
+  }
+
+  .percentiles,
+  .salary {
+    display: flex;
+    flex: row nowrap;
+    justify-content: stretch;
+    position: relative;
+
+    >div {
+      position: relative;
+      flex: 1 1 1;
+
+
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: .5px;
+        height: 100%;
+        background-color: black;
+        opacity: 0.1;
+        border-radius: 1rem;
+      }
+    }
+  }
+
+  .salary {
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: .5px;
+      background-color: black;
+      opacity: 0.1;
+      border-radius: 1rem;
+    }
+  }
+
+
+  &-options {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+
+    select {
+      flex: auto 1 0;
+      max-width: 150px;
+    }
+
+  }
+
+  &:first-child {
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+
+    >* {
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+    }
+  }
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    height: calc(100% - 4rem - 3rem);
+    width: 1px;
+    border-radius: 1rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    right: 0;
+    top: calc(3rem + 50%);
+    transform: translateY(-50%);
+  }
+
+  &:last-child {
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+
+    >* {
+      border-top-right-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+    }
+  }
+}
