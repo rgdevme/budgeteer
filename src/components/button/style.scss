@@ -1,0 +1,76 @@
+@use "sass:color";
+
+$base: #EDE6DB;
+$main: #006E7F;
+$accent: #EE5007;
+$error: #B22727;
+$warning: #F8CB2E;
+
+@mixin button-colors($bg, $text, $hover: true) {
+  --primary: #{$bg};
+  --secondary: #{$text};
+
+  $lightness: 0%;
+
+  @if $hover {
+    $lightness: 20%;
+  }
+
+  &:hover {
+    --primary: #{color.scale($bg, $lightness: $lightness)};
+    --secondary: #{color.scale($text, $lightness: $lightness)};
+  }
+}
+
+.button {
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  text-align: center;
+  cursor: pointer;
+  transition: all 150ms;
+  border-width: 0px;
+  border-style: solid;
+
+  // color
+  &.main {
+    @include button-colors($main, $base);
+  }
+
+  &.accent {
+    @include button-colors($accent, $base);
+  }
+
+  &[data-disabled=true] {
+    @include button-colors(lightgrey, gray, false);
+    cursor: not-allowed;
+  }
+
+  // style
+  &.flat {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--secondary);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .1);
+  }
+
+  &.outline {
+    background-color: transparent;
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  &.text {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--primary);
+  }
+
+  // name
+  &[data-icon=true] {
+    width: min-content;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
