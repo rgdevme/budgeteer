@@ -1,0 +1,24 @@
+.footer {
+  min-height: 4rem;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  color: darkslategrey;
+  flex: auto 1 1;
+
+  &,
+  & * {
+    font-family: "JetBrains Mono";
+    line-height: 1em;
+    vertical-align: middle;
+  }
+
+  .love {
+    color: indianred;
+  }
+  .info {
+    color: dodgerblue;
+  }
+}

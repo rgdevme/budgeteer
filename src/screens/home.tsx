@@ -15,13 +15,17 @@ import ResponseData, {
 } from '../types/responses'
 import { Weather } from '../types/weather'
 import { BiDollar, BiLocationPlus } from 'react-icons/bi'
-import { BsHeartFill } from 'react-icons/bs'
 import { HiOutlineClipboardCheck } from 'react-icons/hi'
+import { RiPlayListAddLine } from 'react-icons/ri'
 import { TiPlus } from 'react-icons/ti'
 import Job from '../components/job'
+import Footer from '../components/footer'
+import Header from '../components/header'
+import PageStatus from '../components/pagestatus'
+import Wrapper from '../components/wrapper'
 
 const Home = () => {
-	const [ready, setReady] = useState(false)
+	const [loading, setLoading] = useState(false)
 	const codes = useSelect<CountryResponse>([], [], 'cca2')
 	const [currentCountry, setCurrentCountry] = useState<CountryResponse>()
 	const countries = useSelect<CountryModel>([], [], 'code')
@@ -47,6 +51,7 @@ const Home = () => {
 	}
 
 	const getCountryData = async (data: CountryResponse) => {
+		setLoading(true)
 		let code = data.cca2
 		let promises = [
 			api.holidays.get('/' + code),
@@ -78,10 +83,12 @@ const Home = () => {
 		}
 
 		const country = new CountryModel(response)
+		setLoading(false)
 		return country
 	}
 
 	const getAllCountriesData = async () => {
+		setLoading(true)
 		const current = (await api.location.get<LocationResponse>('/')).data
 		const results = (await api.codes.get<CountryResponse[]>('/')).data
 
@@ -89,7 +96,7 @@ const Home = () => {
 		setCurrentCountry(current_cm)
 
 		codes.updateAll([...results])
-		setReady(true)
+		setLoading(false)
 	}
 
 	useEffect(() => {
@@ -111,47 +118,57 @@ const Home = () => {
 	}, [])
 
 	return (
-		<div className='container' data-modal={jobsms.active || countriesms.active}>
-			<div className='header'>
-				<h1>Welcome to the country budgeteer!</h1>
-				<p>
-					With this budgeterr you can compare the main indexes of a country to
-					assess whether it is a good idea to move to it or not
-				</p>
-			</div>
-			<div className='comparison'>
-				<div className='top-bar'>
-					<Button
-						icon
-						style='text'
-						disabled={!ready || jobs.all.length == 0}
-						onClick={jobsms.toggle}>
-						<HiOutlineClipboardCheck size={24} />
-					</Button>
-					<Button
-						icon
-						style='text'
-						disabled={!ready || countries.selection.length == 0}
-						onClick={rate.reset}>
-						<BiDollar size={24} />
-					</Button>
-					<Button
-						icon
-						style='outline'
-						disabled={!ready || countries.selection.length >= 3}
-						onClick={() => addCountry(currentCountry)}>
-						<BiLocationPlus size={24} />
-					</Button>
-					<Button
-						icon
-						disabled={!ready || countries.selection.length >= 3}
-						onClick={countriesms.toggle}>
-						<TiPlus size={24} />
-					</Button>
-				</div>
-				<div className='table'>
-					{countries.selection.length > 0 ? (
-						<>
+		<>
+			<Header />
+			<div
+				className='container'
+				data-modal={jobsms.active || countriesms.active}>
+				<div className='comparison'>
+					<div className='top-bar'>
+						<Button
+							icon
+							style='text'
+							disabled={loading || jobs.all.length == 0}
+							onClick={jobsms.toggle}>
+							<HiOutlineClipboardCheck size={24} />
+						</Button>
+						<Button
+							icon
+							style='text'
+							disabled={loading || countries.selection.length == 0}
+							onClick={rate.reset}>
+							<BiDollar size={24} />
+						</Button>
+						<Button
+							icon
+							style='outline'
+							disabled={loading || countries.selection.length >= 3}
+							onClick={() => addCountry(currentCountry)}>
+							<BiLocationPlus size={24} />
+						</Button>
+						<Button
+							icon
+							disabled={loading || countries.selection.length >= 3}
+							onClick={countriesms.toggle}>
+							<TiPlus size={24} />
+						</Button>
+					</div>
+					<div className='table'>
+						<Wrapper
+							loading={loading}
+							ready={{
+								status: countries.selection.length > 0,
+								component: (
+									<PageStatus
+										status={{
+											icon: RiPlayListAddLine,
+											onClick: countriesms.toggle,
+											text: 'Add a country'
+										}}
+										text={'No countries selected yet.'}
+									/>
+								)
+							}}>
 							<Country
 								job_ids={jobs.selection.map(j => j.id)}
 								jobs={jobs.all}
@@ -171,17 +188,12 @@ const Home = () => {
 									rate={rate.value}
 								/>
 							))}
-						</>
-					) : (
-						<div>Add a country!</div>
-					)}
+						</Wrapper>
+						{countries.selection.length > 0 ? <></> : <></>}
+					</div>
 				</div>
 			</div>
-			<footer className='footer'>
-				<div>
-					Made with <BsHeartFill />
-				</div>
-			</footer>
+			<Footer />
 			<CountriesM {...countriesms}>
 				{codes.all
 					.sort((a, b) => a.cca2.localeCompare(b.cca2))
@@ -208,7 +220,7 @@ const Home = () => {
 					/>
 				))}
 			</JobsM>
-		</div>
+		</>
 	)
 }
 
